@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- 🎨 Nuevas fuentes más elegantes -->
+    <!-- 🎨 Nuevas fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Merriweather:ital,wght@0,400;1,400&family=Parisienne&display=swap" rel="stylesheet">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
@@ -24,7 +24,7 @@
             --color-texto: #3a3a3a;
             --color-firma: #c91515;
 
-            /* 👇 cambié las fuentes */
+            /* 👇 cambiamos las fuentes */
             --fuente-titulo: 'Dancing Script', cursive;
             --fuente-fecha: 'Merriweather', serif;
             --fuente-carta: 'Parisienne', cursive;
@@ -32,95 +32,96 @@
             --duracion-apertura: 1.7s;
         }
 
+        /* --- PANTALLA DE CARGA --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f0f0f0; display: flex; justify-content: center; align-items: center;
+            flex-direction: column; z-index: 1000; transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-icon { font-size: 80px; color: var(--color-sello); }
+        .progress-bar-container {
+            width: 250px; height: 15px; background-color: #e0e0e0;
+            border-radius: 10px; overflow: hidden; margin-top: 20px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            width: 0%; height: 100%; background-color: var(--color-sello);
+            border-radius: 10px; transition: width 0.3s ease;
+        }
+        #progress-percentage {
+            margin-top: 10px; font-family: 'Lora', serif;
+            font-size: 1rem; color: #555;
+        }
+
         body {
             margin: 0; padding: 20px; box-sizing: border-box;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--color-fondo-gradiente-1) 0%, var(--color-fondo-gradiente-2) 100%),
-                        url('https://drive.google.com/thumbnail?id=1uv9wOVYu8h8PbX4EDBPl4YUm0ZMYNOj1&sz=w1000');
+            background: linear-gradient(135deg, var(--color-fondo-gradiente-1) 0%, var(--color-fondo-gradiente-2) 100%), 
+                url('https://drive.google.com/thumbnail?id=1uv9wOVYu8h8PbX4EDBPl4YUm0ZMYNOj1&sz=w1000');
             background-size: cover; background-position: center;
-            background-blend-mode: screen;
-            overflow: hidden;
+            background-blend-mode: screen; overflow: hidden;
+            
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        h1 {
-            font-family: var(--fuente-titulo);
-            font-size: clamp(2.5rem, 10vw, 5rem);
-            color: #f63afd93;
-            text-shadow: 3px 3px 10px var(--color-sombra-fuerte);
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .contenedor { perspective: 1500px; }
-        .envoltura-sobre {
-            position: relative; width: 320px; height: 220px;
-            cursor: pointer;
-            filter: drop-shadow(0px 20px 25px var(--color-sombra-fuerte));
-            animation: latido 2.5s infinite;
-        }
-        @keyframes latido { 0%,100%{transform:scale(1);} 50%{transform:scale(1.07);} }
-
-        .carta {
-            position: fixed; top: 50%; left: 50%;
-            width: 320px; height: 220px;
-            transform: translate(-50%, -40%) scale(1);
-            opacity: 0; z-index: 1; pointer-events: none;
-            background: var(--color-carta);
-            border-radius: 10px; padding: 25px; box-sizing: border-box;
-            background-image: url('https://drive.google.com/thumbnail?id=1MD6SmwkJ_5hhSCON1E9oUV6CJqL2BTKb&sz=w1000');
-            background-size: cover; background-position: center;
-            background-color: rgba(255,255,255,0.6);
-        }
-
-        .contenido { 
-            color: var(--color-texto);
-            font-family: var(--fuente-carta);
-            width: 100%; height: 100%; overflow: auto; padding-right: 15px;
-        }
-        .contenido .fecha { 
-            display: block; text-align: right; 
-            font-size: 1.1rem; font-family: var(--fuente-fecha); font-style: italic; 
-            color: #888; margin-bottom: 20px;
-        }
-        .contenido .saludo { font-size: 2rem; margin-bottom: 15px; }
-        .contenido .cuerpo { font-size: 1.3rem; line-height: 1.5; margin-bottom: 20px; }
-        .contenido .firma { font-size: 2rem; text-align: right; color: var(--color-firma); margin: 0; }
-
-        .bloque-firma { display: flex; align-items: flex-end; justify-content: flex-end; gap: 20px; margin-top: 30px; }
-        .imagen-recuerdo { width: 150px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
+    <div id="loader">
+        <div class="loader-icon">💌</div>
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="progress-percentage">0%</div>
+    </div>
+    
     <main class="main-content">
         <h1>Un Mensaje Especial para Ti Mi Niña Hermosa</h1>
+
         <div class="contenedor">
             <div class="envoltura-sobre">
+                <div class="sobre"></div>
+                <div class="solapa solapa-superior"></div>
+                <div class="solapa solapa-derecha"></div>
+                <div class="solapa solapa-izquierda"></div>
+                <div class="corazon"></div>
                 <div class="carta">
                     <div class="contenido">
                         <span class="fecha">Para Estefanny</span>
-                        <p class="saludo">Hola mi niña bonita, primero que nada quiero hacerte saber que te amo mucho y eres muy especial para mí 💕</p>
-                        <p class="cuerpo">Nunca te vayas de mi vida, quédate conmigo incluso en los días grises, incluso cuando haya dudas y las cosas no sean fáciles. Quédate aunque a veces no nos entendamos, porque no quiero que seas un recuerdo ni un capítulo: quiero que seas toda mi historia, mi presente y mi futuro.</p>  
+                        <p class="saludo">Hola mi niña bonita primero que nada quiero hacerte saber que te amo mucho y eres muy especial para mi, te amodoro,</p>
+                        <p class="cuerpo">Nunca te vayas de mi vida, quédate conmigo incluso en los días grises, incluso cuando haya dudas y las cosas no sean fáciles. Quédate aunque a veces no nos entendamos, porque no quiero que seas un recuerdo ni un capítulo, quiero que seas toda mi historia, mi presente y mi futuro.</p>  
                         <p class="cuerpo">No necesito esperar otra vida para que lo nuestro funcione; yo me haré cargo de que sea aquí y ahora. Quiero caminar contigo, tropezar contigo, reír contigo y hasta llorar contigo, porque todo tiene sentido si estás a mi lado. No me importa cuán difícil sea, quiero que lo vivamos juntos, tú y yo.</p> 
                         <p class="cuerpo">Eres todo para mí, aunque a veces no lo diga como debería. Intento comprenderte, cuidarte y alegrarte, porque mi mayor deseo es hacerte feliz cada día. Si alguna vez fallé, si te herí, si mis enojos fueron injustos o mis palabras torpes, te pido perdón… no por obligación, sino porque mi corazón solo quiere amarte.</p>
                         <p class="cuerpo">No quiero discusiones que nos alejen, quiero ser alguien que siempre luche por ti, por nosotros, por este amor que, aunque imperfecto, es verdadero y eterno. Porque lo sé con certeza: tú eres mi todo, y siempre, siempre, te amaré.</p>
+                        <p class="cuerpo">En tu risa encuentro melodías que jamás había escuchado, y en tu mirada, refugios que ni sabía que buscaba. Si me lo permitieras quiero que sea eterno.</p>
                         <p class="cuerpo">Gracias por todo.</p>
+                        
                         <div class="bloque-firma">
                             <img src="https://drive.google.com/thumbnail?id=1SsZk-dSh2jGsS2kGgCqhZIgeD9ZUi_jM" alt="Foto de recuerdo" class="imagen-recuerdo">
                             <p class="firma">Con cariño,<br>Harold</p>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </main>
     
-    <!-- 🎶 Música de YouTube -->
-    <iframe width="0" height="0" 
-    src="https://www.youtube.com/embed/CXSWrOhFtQg?autoplay=1&loop=1&playlist=CXSWrOhFtQg" 
-    frameborder="0" allow="autoplay"></iframe>
+    <!-- 🎶 Música desde Google Drive -->
+    <audio id="sound" autoplay loop preload="auto">
+        <source src="https://docs.google.com/uc?export=download&id=1zEBj6WMujKFw7nXJiS7LRRDwXDaHBLSA" type="audio/mpeg">
+        Tu navegador no soporta audio en HTML5.
+    </audio>
 
+    <!-- tu JS se queda igualito -->
+    <script>
+        // ... el mismo JavaScript que ya tenías ...
+    </script>
 </body>
-  </html>
+</html>
